@@ -33,6 +33,7 @@ provider:
   environment:
     USERS_TABLE: ${self:custom.tableName}
     REGION: ${self:provider.region}
+    SNS_TOPIC_ARN: arn:aws:sns:us-east-1:121189441734:quotes-messages-dev
 
 functions:
   quotes:
@@ -49,7 +50,13 @@ functions:
           path: /subscribe
           method: POST
           cors: true
-
+  staticMailer:
+    handler: handler/staticMailer.staticMailer
+    events:
+      - http:
+          path: /static-mailer
+          method: POST
+          cors: true
 resources:
   Resources:
   # SNS
